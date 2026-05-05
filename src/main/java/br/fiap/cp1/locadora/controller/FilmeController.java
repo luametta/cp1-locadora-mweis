@@ -14,51 +14,49 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fiap.cp1.locadora.model.Genero;
-import br.fiap.cp1.locadora.repository.GeneroRepository;
+import br.fiap.cp1.locadora.model.Filme;
+import br.fiap.cp1.locadora.repository.FilmeRepository;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
-@RequestMapping("/generos")
-public class GeneroController {
+@RequestMapping("/filmes")
+public class FilmeController {
 
     @Autowired
-    private GeneroRepository generoRepository;
+    private FilmeRepository filmeRepository;
 
     @PostMapping
-    public ResponseEntity<Genero> create(@RequestBody Genero genero) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(generoRepository.save(genero));
+    public ResponseEntity<Filme> create(@RequestBody Filme filme) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(filmeRepository.save(filme));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Genero> findById(@PathVariable Long id) {
-        return generoRepository
-            .findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Filme> findById(@PathVariable Long id) {
+        return filmeRepository
+                .findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public ResponseEntity<List<Genero>> findAll() {
-        return ResponseEntity.ok(generoRepository.findAll());
+    public ResponseEntity<List<Filme>> findAll() {
+        return ResponseEntity.ok(filmeRepository.findAll());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Genero> update(@PathVariable Long id, @RequestBody Genero genero) {
-        Optional<Genero> optCliente = generoRepository.findById(id);
-
+    public ResponseEntity<Filme> update(@PathVariable Long id, @RequestBody Filme filme) {
+        Optional<Filme> optCliente = filmeRepository.findById(id);
         if (optCliente.isPresent()) {
-            genero.setId(id);
-            Genero clienteAlterado = generoRepository.save(genero);
+            filme.setId(id);
+            Filme clienteAlterado = filmeRepository.save(filme);
             return ResponseEntity.ok(clienteAlterado);
         } else {
             return ResponseEntity.notFound().build();
-        }     
+        }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) { 
-        generoRepository.deleteById(id);
+        filmeRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
